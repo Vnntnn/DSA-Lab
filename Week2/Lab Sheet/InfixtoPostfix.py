@@ -46,24 +46,40 @@ class ArrayStack:
     def print_stack(self):
         print(self.data)
 
-STUDENT = ArrayStack()
-STUDENT_GROUP = list()
+def priority(op):
+    """Priority operators"""
+    if op in ("+", "-"):
+        return 1
+    if op in ("*", "/"):
+        return 2
+    return 0
 
-for _ in range(int(input())):
-    STUDENT_GROUP.append(ArrayStack())
+def infixtoPostfix(expression):
+    """Convert infix expression to postfix."""
+    operators = ArrayStack()
+    postfix = []
 
-for _ in range(int(input())):
-    STUDENT.push(input())
+    for i in expression:
+        if i.isalnum():  # Operand
+            postfix.append(i)
 
-def main():
-    """main function"""
-    while STUDENT.get_size():
-        for student_sub in STUDENT_GROUP:
-            if STUDENT.get_size():
-                student_sub.push(STUDENT.pop())
+        elif i == "(":
+            operators.push(i)
 
-    for index, student_name in enumerate(STUDENT_GROUP):
-        print(f"Group {index + 1}:", end=" ")
-        print(*student_name.data, sep=", ")
+        elif i == ")":
+            while not operators.is_empty() and operators.get_stack_top() != "(":
+                postfix.append(operators.pop())
+            operators.pop()  # Remove '('
 
-main()
+        elif i in "+-*/":
+            while (not operators.is_empty() and 
+                   priority(i) <= priority(operators.get_stack_top())):
+                postfix.append(operators.pop())
+            operators.push(i)
+
+    while not operators.is_empty():
+        postfix.append(operators.pop())
+
+    return "".join(postfix)
+
+print(infixtoPostfix(input()))
