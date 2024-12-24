@@ -70,7 +70,6 @@ def infixtoPostfix(expression):
             while not operators.is_empty() and operators.get_stack_top() != "(":
                 postfix.append(operators.pop())
             operators.pop()  # Remove '('
-
         elif i in "+-*/":
             while (not operators.is_empty() and 
                    priority(i) <= priority(operators.get_stack_top())):
