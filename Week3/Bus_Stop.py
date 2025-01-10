@@ -1,4 +1,4 @@
-"""AlmostMean"""
+"""Bus stop"""
 class DataNode:
     def __init__(self, data = None):
         self.data = data
@@ -74,47 +74,30 @@ class SinglyLinkedList:
             prev = current
         print("Cannot delete, " + data + " does not exist.")
 
-STUDENT = SinglyLinkedList()
-NUM = int(input())
-SUM = 0
 
-# Split tab from input
-for _ in range(NUM):
-    b_student = input().split('\t')
-    STUDENT.insert_last(b_student)
+def main(ma_x: int, sign: int):
+    """main function"""
+    bus = SinglyLinkedList().insert_last(SinglyLinkedList().insert_last(input().split()) for _ in range(sign))
+    current_bus = SinglyLinkedList()
+    cou_nt = 0
 
-# Sum score
-CURRENT = STUDENT.head
-while CURRENT is not None:
-    i = 1
-    for s_score in CURRENT.data:
-        if i == 1:
-            i += 1
-            continue
-        SUM += float(s_score)
-        break
-    CURRENT = CURRENT.next
+    for i in range(sign):
+        # Iteration through bus list
+        for bus_ in bus.data:
+            # Iteration through specific bus
+            i = 0
+            for bus_sign in bus_:
+                # Check passenger
+                if i == 0:
+                    prev = bus_sign.head
+                    i += 1
+                    break
+                pp = bus_sign.head
+                while pp is not None:
+                    if bus_sign == prev:
+                        cou_nt += 1
+                    pp = bus_sign.next
+        # ไม่ทำละ ค
 
-# Calc mean
-MEAN = SUM / NUM
-
-# Find mean
-ID = ""
-ID_SCORE = 0
-
-CURRENT = STUDENT.head
-while CURRENT is not None:
-    i = 1
-    current_id = ""
-    for id in CURRENT.data:
-        if i == 1:
-            current_id = id
-            i += 1
-        else:
-            if ID_SCORE < float(id) <= MEAN:
-                ID_SCORE = float(id)
-                ID = current_id
-            break
-    CURRENT = CURRENT.next
-
-print(ID + "\t" + str(ID_SCORE))
+    print(cou_nt)
+main(int(input()), int(input()))
