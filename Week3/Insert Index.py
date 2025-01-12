@@ -1,4 +1,4 @@
-"""Bus stop"""
+"""Insert Index"""
 class DataNode:
     def __init__(self, data = None):
         self.data = data
@@ -16,7 +16,7 @@ class SinglyLinkedList:
         else:
             while current is not None:
                 if current.next is not None:
-                    print(current.data, end=" -> ")
+                    print(current.data, end=" ")
                 else:
                     print(current.data)
                 current = current.next
@@ -74,73 +74,57 @@ class SinglyLinkedList:
             prev = current
         print("Cannot delete, " + data + " does not exist.")
 
-    def get_node_at(self, index):
-        current = self.head
-        for _ in range(index):
-            if current is None:
-                return None
-            current = current.next
-        return current
-
-def main(p, n):
+def main():
     """main function"""
-    bus_stops = SinglyLinkedList()
-    counter = 0
-    while counter < n + 1:
-        bus_stops.insert_last(SinglyLinkedList())
-        counter += 1
+    data = SinglyLinkedList()
+    # Input
+    for _ in range(int(input())):
+        data.insert_last(int(input()))
 
-    counter = 0
-    while counter < n:
-        line = input()
-        new_line = DataNode()
-        current = new_line
-        # split input
-        for char in line:
-            if char == " ":
-                current.next = DataNode()
+    in_data = int(input())
+    ins_data = int(input())
+    index = 0
+    neg = 0
+    current = data.head
+
+    # if input index is neg
+    if in_data < 0:
+        neg = in_data + data.count
+
+    # if input index is 0 when list is empty
+    if not in_data:
+        data.insert_front(ins_data)
+        data.traverse()
+        return
+
+    #if you want insert data to the last node
+    if in_data == data.count:
+        data.insert_last(ins_data)
+        data.traverse()
+        return
+
+    # Loop till reach excepted index and insert before data at index
+    while current:
+        # If index is negative
+        if in_data < 0:
+            in_data = neg
+            prev = None
+            while current:
+                if index == in_data:
+                    prev = current.next
+                    data.insert_before(prev.data, ins_data)
+                    break
+                prev = current.next
                 current = current.next
-            else:
-                if current.data is None:
-                    current.data = char
-                else:
-                    current.data += char
-        stop = int(new_line.data)
-        current_stop = bus_stops.get_node_at(stop).data
-        current = new_line.next
-        while current is not None:
-            current_stop.insert_last(int(current.data))
+                index += 1
+            break
+        else:
+            if index == in_data:
+                data.insert_before(current.data, ins_data)
+                break
             current = current.next
-        counter += 1
+            index += 1
 
-    passengers = SinglyLinkedList()
-    total_dropped = 0
+    data.traverse()
 
-    stop = 1
-    while stop <= n:
-        current = passengers.head
-        prev = None
-        while current is not None:
-            if current.data == stop:
-                total_dropped += 1
-                if prev is None:
-                    passengers.head = current.next
-                else:
-                    prev.next = current.next
-                passengers.count -= 1
-                current = prev.next if prev else passengers.head
-            else:
-                prev = current
-                current = current.next
-
-        current_stop = bus_stops.get_node_at(stop).data
-        current = current_stop.head
-        while current is not None and passengers.count < p:
-            if current.data > stop:
-                passengers.insert_last(current.data)
-            current = current.next
-        stop += 1
-
-    print(total_dropped)
-
-main(int(input()), int(input()))
+main()
