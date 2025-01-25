@@ -38,7 +38,7 @@ class Queue:
         self.head = self.head.next
         self.count -= 1
         print(f"Dequeue item: {rem.data.show_info()}")
-        return rem
+        return rem.data
 
     def peek(self):
         """Return head of queue"""
@@ -46,68 +46,46 @@ class Queue:
             print("Underflow! peek from an empty queue")
             return 0
         rem = self.head
-        return rem
+        print("Peek item: " + rem.data.show_info())
+        return rem.data
 
     def isEmpty(self):
         """If queue is empty"""
-        if self.head is None:
-            return True
-        return False
+        return self.head is None
 
     def show_Queue(self):
         """Show music queue"""
-        if self.head is None:
+        if self.isEmpty():
             print("Queue is empty!")
             return 0
         current = self.head
         count = 1
-        while current is not None:
+        while current:
             print(f"Queue#{count} {current.data.show_info()}")
             current = current.next
             count += 1
 
     def lastSong(self, time: int):
         """Last song when time is over"""
-        if self.isEmpty():
-            print("Nothing here! Please add some song")
-            return 0
         current = self.head
-        total_duration = 0
-        while current:
-            total_duration += current.data.duration
+        t_time = 0
+        n_time = 0
+        count = 0
+        while current is not None:
+            t_time += current.data.durations
             current = current.next
-        time %= total_duration
+        t_time -= time
         current = self.head
-        while time > 0:
-            time -= current.data.duration
-            if time <= 0:
-                print(f"Queue#{self.count} {current.data.show_info()}")
-            else:
-                if current.next:
-                    current = current.next
-                else:
-                    current = self.head
+        while t_time > n_time:
+            n_time += current.data.durations
+            t_time -= n_time
+            current = current.next
+            count += 1
+        print(f"Queue#{count} {current.data.show_info()}")
 
     def removeSong(self, name: str):
         """Remove song"""
-        if self.isEmpty():
-            print(f"Can not Delete! {name} is not exist")
-            return 0
-        current = self.head
-        prev = None
-        while current is not None:
-            if current.data.name == name:
-                if prev:
-                    prev.next = current.next
-                else:
-                    self.head = current.next
-                self.count -= 1
-                return 0
-            prev = current
-            current = current.next
-        else:
-            print(f"Can not Delete! {name} is not exist")
-            return 0
+        pass
 
     def groupSong(self):
         pass
