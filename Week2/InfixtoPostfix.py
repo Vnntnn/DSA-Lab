@@ -72,7 +72,7 @@ def infixtoPostfix(expression):
             operators.pop()  # Remove '('
         elif i in "+-*/":
             while (not operators.is_empty() and 
-                   priority(i) <= priority(operators.get_stack_top())):
+                    priority(i) <= priority(operators.get_stack_top())):
                 postfix.append(operators.pop())
             operators.push(i)
 
