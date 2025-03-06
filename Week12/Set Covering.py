@@ -24,11 +24,10 @@ def findStations(stations: list) -> list:
     """Find intersec stations in city"""
     cities = [json.loads(input()) for _ in range(int(input()))]
     stations, ans = set(stations), []
-    index = 0
 
     while stations:
         cities = insertionSort(cities, stations)
-        current = cities[index]
+        current = cities.pop(0)
         covered = set(current["Cities"]).intersection(stations)
 
         if not covered:
@@ -36,7 +35,6 @@ def findStations(stations: list) -> list:
 
         ans.append(current["Name"])
         stations -= covered
-        index += 1
 
     return sorted(ans)
 
